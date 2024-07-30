@@ -12,11 +12,11 @@ class Books{
         string author;
         int quantity;
 
-        void setdata(int c,string n,string a,int q){
-            code=c;
-            name=n;
-            author=a;
-            quantity=q;
+        void setdata(int code,string name,string author,int quantity){
+            code=this->code;
+            name=this->name;
+            author=this->author;
+            quantity=this->quantity;
         }
 
         void display(){
