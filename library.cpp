@@ -13,10 +13,10 @@ class Books{
         int quantity;
 
         void setdata(int code,string name,string author,int quantity){
-            code=this->code;
-            name=this->name;
-            author=this->author;
-            quantity=this->quantity;
+            this->code=code;
+            this->name=name;
+            this->author=author;
+            this->quantity=quantity;
         }
 
         void display(){
