@@ -5,32 +5,50 @@ using namespace std;
 
 class Books {
 public:
+    static int total_books;      
+    static int total_quantity;   
+
     int code;
     string name;
     string author;
     int quantity;
+
+    Books() {
+        total_books++;
+    }
 
     void setdata(int code, string name, string author, int quantity) {
         this->code = code;
         this->name = name;
         this->author = author;
         this->quantity = quantity;
+        total_quantity += quantity;  // Add the quantity of this book to the total quantity
     }
 
     void display() {
         cout << code << "\t\t" << name << "\t\t" << author << "\t\t" << quantity << endl;
     }
+
+    static void display_totals() { // Static method to display total books and quantity
+        cout << "\nTotal number of books: " << total_books << endl;
+        cout << "Total quantity of all books: " << total_quantity << endl;
+    }
 };
+
+
+int Books::total_books = 0;
+int Books::total_quantity = 0;
 
 class Library {
 private:
     Books* books;
     int num_books;
+
 public:
     Library() : books(nullptr), num_books(0) {}
 
     ~Library() {
-        delete[] books; // Deallocate the memory allocated for books
+        delete[] books; 
     }
 
     void getdata() {
@@ -38,7 +56,7 @@ public:
         cin >> num_books;
         cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
-        books = new Books[num_books]; // Dynamically allocate memory for books
+        books = new Books[num_books];
 
         for (int i = 0; i < num_books; i++) {
             int code, quantity;
@@ -71,6 +89,8 @@ public:
             books[i].display();
         }
         cout << "----------------------------------------------------------\n";
+
+        Books::display_totals();  // Display the total number of books and quantity
     }
 
     void fetch_book() {
