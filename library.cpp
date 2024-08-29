@@ -22,14 +22,14 @@ public:
         this->name = name;
         this->author = author;
         this->quantity = quantity;
-        total_quantity += quantity;  // Add the quantity of this book to the total quantity
+        total_quantity += quantity;  
     }
 
     void display() {
         cout << code << "\t\t" << name << "\t\t" << author << "\t\t" << quantity << endl;
     }
 
-    static void display_totals() { // Static method to display total books and quantity
+    static void display_totals() { // I used the static method here to display total books and quantity
         cout << "\nTotal number of books: " << total_books << endl;
         cout << "Total quantity of all books: " << total_quantity << endl;
     }
@@ -90,7 +90,7 @@ public:
         }
         cout << "----------------------------------------------------------\n";
 
-        Books::display_totals();  // Display the total number of books and quantity
+        Books::display_totals(); 
     }
 
     void fetch_book() {
