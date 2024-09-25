@@ -8,16 +8,20 @@ public:
     static int total_books;      
     static int total_quantity;   
 
+private:
     int code;
     string name;
     string author;
     int quantity;
 
+public:
+    // Constructor to initialize the total number of books
     Books() {
         total_books++;
     }
 
-    void setdata(int code, string name, string author, int quantity) {
+    // Mutator method to set book data
+    void setData(int code, const string& name, const string& author, int quantity) {
         this->code = code;
         this->name = name;
         this->author = author;
@@ -25,17 +29,36 @@ public:
         total_quantity += quantity;  
     }
 
-    void display() {
+    // Accessor methods to get book data
+    int getCode() const {
+        return code;
+    }
+
+    string getName() const {
+        return name;
+    }
+
+    string getAuthor() const {
+        return author;
+    }
+
+    int getQuantity() const {
+        return quantity;
+    }
+
+    // Method to display book details
+    void display() const {
         cout << code << "\t\t" << name << "\t\t" << author << "\t\t" << quantity << endl;
     }
 
-    static void display_totals() { // I used the static method here to display total books and quantity
+    // Static method to display total books and quantities
+    static void displayTotals() { 
         cout << "\nTotal number of books: " << total_books << endl;
         cout << "Total quantity of all books: " << total_quantity << endl;
     }
 };
 
-
+// Initialize static variables
 int Books::total_books = 0;
 int Books::total_quantity = 0;
 
@@ -45,13 +68,16 @@ private:
     int num_books;
 
 public:
+    // Constructor to initialize the Library
     Library() : books(nullptr), num_books(0) {}
 
+    // Destructor to release memory
     ~Library() {
         delete[] books; 
     }
 
-    void getdata() {
+    // Method to input book data
+    void getData() {
         cout << "Enter the number of books you need to store in Library: ";
         cin >> num_books;
         cin.ignore(numeric_limits<streamsize>::max(), '\n');
@@ -76,10 +102,11 @@ public:
             cin >> quantity;
             cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
-            books[i].setdata(code, book_name, author, quantity);
+            books[i].setData(code, book_name, author, quantity);
         }
     }
 
+    // Method to display all books in the library
     void display() {
         cout << "Library Books\n";
         cout << "----------------------------------------------------------\n";
@@ -90,10 +117,11 @@ public:
         }
         cout << "----------------------------------------------------------\n";
 
-        Books::display_totals(); 
+        Books::displayTotals(); 
     }
 
-    void fetch_book() {
+    // Method to fetch a specific book by various criteria
+    void fetchBook() {
         string search_type;
         cout << "Search by (1) Book Code, (2) Book Name, (3) Author Name: ";
         getline(cin, search_type);
@@ -105,53 +133,54 @@ public:
             cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
             for (int i = 0; i < num_books; i++) {
-                if (books[i].code == code) {
-                    display_book(books[i]);
-                    return;
-                };
-            }
-            cout << "Book not Found";
-        } else if (search_type == "2") {
-            string Book_name;
-            cout << "Enter Book Name: ";
-            getline(cin, Book_name);
-
-            for (int i = 0; i < num_books; i++) {
-                if (books[i].name == Book_name) {
-                    display_book(books[i]);
+                if (books[i].getCode() == code) {
+                    displayBook(books[i]);
                     return;
                 }
             }
-            cout << "Book not found";
+            cout << "Book not found" << endl;
+        } else if (search_type == "2") {
+            string book_name;
+            cout << "Enter Book Name: ";
+            getline(cin, book_name);
+
+            for (int i = 0; i < num_books; i++) {
+                if (books[i].getName() == book_name) {
+                    displayBook(books[i]);
+                    return;
+                }
+            }
+            cout << "Book not found" << endl;
         } else if (search_type == "3") {
             string author;
             cout << "Enter Author Name: ";
             getline(cin, author);
 
             for (int i = 0; i < num_books; i++) {
-                if (author == books[i].author) {
-                    display_book(books[i]);
+                if (books[i].getAuthor() == author) {
+                    displayBook(books[i]);
                     return;
                 }
             }
-            cout << "Book not found";
+            cout << "Book not found" << endl;
         }
     }
 
-    void display_book(Books& books) {
+    // Method to display details of a specific book
+    void displayBook(const Books& book) {
         cout << "Book Details\n";
         cout << "----------------------------------------------------------\n";
         cout << "Book Code \t Book Name \t\t Author \t Quantity\n";
         cout << "----------------------------------------------------------\n";
-        books.display();
+        book.display();
         cout << "----------------------------------------------------------\n";
     }
 };
 
 int main() {
     Library library;
-    library.getdata();
+    library.getData();
     library.display();
-    library.fetch_book();
+    library.fetchBook();
     return 0;
 }
