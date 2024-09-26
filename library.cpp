@@ -5,28 +5,28 @@ using namespace std;
 
 class Books {
 public:
-    static int total_books;      
-    static int total_quantity;   
+    static int total_books;      // Total number of books
+    static int total_quantity;   // Total quantity of all books
 
 private:
-    int code;
-    string name;
-    string author;
-    int quantity;
+    int code;                    // Book code (private)
+    string name;                 // Book name (private)
+    string author;               // Author name (private)
+    int quantity;                // Quantity of the book (private)
 
 public:
-    // Constructor to initialize the total number of books
+    // Constructor to increment the total number of books
     Books() {
         total_books++;
     }
 
     // Mutator method to set book data
     void setData(int code, const string& name, const string& author, int quantity) {
-        this->code = code;
-        this->name = name;
-        this->author = author;
-        this->quantity = quantity;
-        total_quantity += quantity;  
+        this->code = code;          // Set book code
+        this->name = name;          // Set book name
+        this->author = author;      // Set author name
+        this->quantity = quantity;  // Set quantity of the book
+        total_quantity += quantity; // Increment total quantity of all books
     }
 
     // Accessor methods to get book data
@@ -64,8 +64,8 @@ int Books::total_quantity = 0;
 
 class Library {
 private:
-    Books* books;
-    int num_books;
+    Books* books;     // Dynamic array of books (private)
+    int num_books;    // Number of books in the library (private)
 
 public:
     // Constructor to initialize the Library
@@ -80,8 +80,9 @@ public:
     void getData() {
         cout << "Enter the number of books you need to store in Library: ";
         cin >> num_books;
-        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Ignore newline
 
+        // Allocate memory for books dynamically
         books = new Books[num_books];
 
         for (int i = 0; i < num_books; i++) {
@@ -90,18 +91,19 @@ public:
 
             cout << "Enter Book code: ";
             cin >> code;
-            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Ignore newline
 
             cout << "Enter Book Name: ";
-            getline(cin, book_name);
+            getline(cin, book_name); // Read book name
 
             cout << "Enter the Author Name: ";
-            getline(cin, author);
+            getline(cin, author); // Read author name
 
             cout << "Enter quantity: ";
             cin >> quantity;
-            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Ignore newline
 
+            // Set the book data using setData() method
             books[i].setData(code, book_name, author, quantity);
         }
     }
@@ -113,11 +115,11 @@ public:
         cout << "Book Code \t Book Name\t\t Author \t Quantity\n";
         cout << "----------------------------------------------------------\n";
         for (int i = 0; i < num_books; i++) {
-            books[i].display();
+            books[i].display(); // Display each book
         }
         cout << "----------------------------------------------------------\n";
 
-        Books::displayTotals(); 
+        Books::displayTotals(); // Display total books and quantities
     }
 
     // Method to fetch a specific book by various criteria
@@ -130,7 +132,7 @@ public:
             int code;
             cout << "Enter Book Code: ";
             cin >> code;
-            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Ignore newline
 
             for (int i = 0; i < num_books; i++) {
                 if (books[i].getCode() == code) {
@@ -142,7 +144,7 @@ public:
         } else if (search_type == "2") {
             string book_name;
             cout << "Enter Book Name: ";
-            getline(cin, book_name);
+            getline(cin, book_name); // Read book name
 
             for (int i = 0; i < num_books; i++) {
                 if (books[i].getName() == book_name) {
@@ -154,7 +156,7 @@ public:
         } else if (search_type == "3") {
             string author;
             cout << "Enter Author Name: ";
-            getline(cin, author);
+            getline(cin, author); // Read author name
 
             for (int i = 0; i < num_books; i++) {
                 if (books[i].getAuthor() == author) {
@@ -172,15 +174,15 @@ public:
         cout << "----------------------------------------------------------\n";
         cout << "Book Code \t Book Name \t\t Author \t Quantity\n";
         cout << "----------------------------------------------------------\n";
-        book.display();
+        book.display(); // Display the book
         cout << "----------------------------------------------------------\n";
     }
 };
 
 int main() {
-    Library library;
-    library.getData();
-    library.display();
-    library.fetchBook();
+    Library library; // Create a Library object
+    library.getData(); // Get data for books
+    library.display(); // Display all books
+    library.fetchBook(); // Fetch a specific book by criteria
     return 0;
 }
