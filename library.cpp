@@ -15,9 +15,29 @@ private:
     int quantity;                // Quantity of the book (private)
 
 public:
-    // Constructor to increment the total number of books
+    // Default constructor (Type 1: Default constructor)
     Books() {
         total_books++;
+        code = 0;
+        name = "Unknown";
+        author = "Unknown";
+        quantity = 0;
+    }
+
+    // Parameterized constructor (Type 2: Parameterized constructor)
+    Books(int code, const string& name, const string& author, int quantity) {
+        this->code = code;
+        this->name = name;
+        this->author = author;
+        this->quantity = quantity;
+        total_quantity += quantity;
+        total_books++;
+    }
+
+    // Destructor
+    ~Books() {
+        // Explicitly defining a destructor
+        cout << "Destructor called for book: " << name << endl;
     }
 
     // Mutator method to set book data
@@ -52,7 +72,7 @@ public:
     }
 
     // Static method to display total books and quantities
-    static void displayTotals() { 
+    static void displayTotals() {
         cout << "\nTotal number of books: " << total_books << endl;
         cout << "Total quantity of all books: " << total_quantity << endl;
     }
@@ -68,12 +88,13 @@ private:
     int num_books;    // Number of books in the library (private)
 
 public:
-    // Constructor to initialize the Library
+    // Default constructor (Type 1)
     Library() : books(nullptr), num_books(0) {}
 
     // Destructor to release memory
     ~Library() {
-        delete[] books; 
+        delete[] books; // Explicitly releasing memory
+        cout << "Library destructor called, memory released." << endl;
     }
 
     // Method to input book data
@@ -180,9 +201,18 @@ public:
 };
 
 int main() {
-    Library library; // Create a Library object
-    library.getData(); // Get data for books
-    library.display(); // Display all books
+    // Create a Library object
+    Library library;
+
+    // Use the default constructor for some books
+    Books book1;
+
+    // Use the parameterized constructor for other books
+    Books book2(101, "The Great Gatsby", "F. Scott Fitzgerald", 5);
+
+    library.getData();   // Get data for books
+    library.display();   // Display all books
     library.fetchBook(); // Fetch a specific book by criteria
+
     return 0;
 }
