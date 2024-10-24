@@ -8,12 +8,15 @@ protected:
     string genre_name;
 
 public:
+    // Constructor for Genre class
     Genre(const string& genre_name) : genre_name(genre_name) {}
 
+    // Function to display genre
     void displayGenre() const {
         cout << "Genre: " << genre_name << endl;
     }
 
+    // Virtual function to demonstrate runtime polymorphism
     virtual void describe() const {
         cout << "This is a general genre." << endl;
     }
@@ -21,8 +24,10 @@ public:
 
 class Fiction : public Genre {
 public:
+    // Calling base class constructor with Fiction genre
     Fiction() : Genre("Fiction") {}
 
+    // Overriding the describe function (Runtime Polymorphism)
     void describe() const {
         cout << "This is a fiction genre, typically imaginative or invented." << endl;
     }
@@ -30,8 +35,10 @@ public:
 
 class NonFiction : public Genre {
 public:
+    // Calling base class constructor with Non-Fiction genre
     NonFiction() : Genre("Non-Fiction") {}
 
+    // Overriding the describe function (Runtime Polymorphism)
     void describe() const {
         cout << "This is a non-fiction genre, based on factual information." << endl;
     }
@@ -39,6 +46,7 @@ public:
 
 class Books {
 public:
+    // Static members to track total books and quantities
     static int total_books;
     static int total_quantity;
 
@@ -49,6 +57,7 @@ private:
     int quantity;
 
 public:
+    // Default constructor (Compile-Time Polymorphism - Constructor Overloading)
     Books() {
         total_books++;
         code = 0;
@@ -57,6 +66,7 @@ public:
         quantity = 0;
     }
 
+    // Parameterized constructor (Compile-Time Polymorphism - Constructor Overloading)
     Books(int code, const string& name, const string& author, int quantity) {
         this->code = code;
         this->name = name;
@@ -66,10 +76,12 @@ public:
         total_books++;
     }
 
+    // Destructor
     ~Books() {
         cout << "Destructor called for book: " << name << endl;
     }
 
+    // Setter for book details
     void setData(int code, const string& name, const string& author, int quantity) {
         this->code = code;
         this->name = name;
@@ -78,32 +90,19 @@ public:
         total_quantity += quantity;
     }
 
-    int getCode() const {
-        return code;
-    }
-
-    string getName() const {
-        return name;
-    }
-
-    string getAuthor() const {
-        return author;
-    }
-
-    int getQuantity() const {
-        return quantity;
-    }
-
+    // Display function for book information
     void display() const {
         cout << code << "\t\t" << name << "\t\t" << author << "\t\t" << quantity << endl;
     }
 
+    // Static function to display total books and quantities
     static void displayTotals() {
         cout << "\nTotal number of books: " << total_books << endl;
         cout << "Total quantity of all books: " << total_quantity << endl;
     }
 };
 
+// Initializing static members
 int Books::total_books = 0;
 int Books::total_quantity = 0;
 
@@ -114,8 +113,10 @@ private:
     int num_books;
 
 public:
+    // Constructor for Library
     Library() : books(nullptr), genres(nullptr), num_books(0) {}
 
+    // Destructor to clean up dynamic memory
     ~Library() {
         delete[] books;
         for (int i = 0; i < num_books; ++i) {
@@ -125,6 +126,7 @@ public:
         cout << "Library destructor called, memory released." << endl;
     }
 
+    // Function to gather data about books and genres
     void getData() {
         cout << "Enter the number of books you need to store in Library: ";
         cin >> num_books;
@@ -153,10 +155,12 @@ public:
 
             books[i].setData(code, book_name, author, quantity);
 
+            // Getting genre choice and dynamically assigning the appropriate class
             cout << "Select genre (1) Fiction (2) Non-Fiction: ";
             cin >> genre_choice;
             cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
+            // Runtime Polymorphism: Deciding genre dynamically at runtime
             if (genre_choice == 1) {
                 genres[i] = new Fiction();
             } else {
@@ -165,6 +169,7 @@ public:
         }
     }
 
+    // Function to display all books and their genres
     void display() {
         cout << "Library Books\n";
         cout << "----------------------------------------------------------\n";
@@ -172,17 +177,18 @@ public:
         cout << "----------------------------------------------------------\n";
         for (int i = 0; i < num_books; i++) {
             books[i].display();
-            genres[i]->displayGenre();
+            genres[i]->displayGenre(); // Dynamic binding with virtual function
         }
         cout << "----------------------------------------------------------\n";
 
-        Books::displayTotals();
+        Books::displayTotals(); // Display totals using static members
     }
 };
 
 int main() {
     Library library;
 
+    // Getting library data and displaying the results
     library.getData();
     library.display();
 
