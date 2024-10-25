@@ -11,14 +11,12 @@ public:
     // Constructor for Genre class
     Genre(const string& genre_name) : genre_name(genre_name) {}
 
+    // Pure virtual function to demonstrate runtime polymorphism
+    virtual void describe() const = 0;
+
     // Function to display genre
     void displayGenre() const {
         cout << "Genre: " << genre_name << endl;
-    }
-
-    // Virtual function to demonstrate runtime polymorphism
-    virtual void describe() const {
-        cout << "This is a general genre." << endl;
     }
 };
 
@@ -28,7 +26,7 @@ public:
     Fiction() : Genre("Fiction") {}
 
     // Overriding the describe function (Runtime Polymorphism)
-    void describe() const {
+    void describe() const override {
         cout << "This is a fiction genre, typically imaginative or invented." << endl;
     }
 };
@@ -39,7 +37,7 @@ public:
     NonFiction() : Genre("Non-Fiction") {}
 
     // Overriding the describe function (Runtime Polymorphism)
-    void describe() const {
+    void describe() const override {
         cout << "This is a non-fiction genre, based on factual information." << endl;
     }
 };
@@ -57,7 +55,7 @@ private:
     int quantity;
 
 public:
-    // Default constructor (Compile-Time Polymorphism - Constructor Overloading)
+    // Default constructor
     Books() {
         total_books++;
         code = 0;
@@ -66,7 +64,7 @@ public:
         quantity = 0;
     }
 
-    // Parameterized constructor (Compile-Time Polymorphism - Constructor Overloading)
+    // Parameterized constructor
     Books(int code, const string& name, const string& author, int quantity) {
         this->code = code;
         this->name = name;
@@ -177,7 +175,8 @@ public:
         cout << "----------------------------------------------------------\n";
         for (int i = 0; i < num_books; i++) {
             books[i].display();
-            genres[i]->displayGenre(); // Dynamic binding with virtual function
+            genres[i]->displayGenre(); // Display genre information
+            genres[i]->describe();     // Dynamic binding with virtual function
         }
         cout << "----------------------------------------------------------\n";
 
