@@ -3,6 +3,7 @@
 #include <limits>
 using namespace std;
 
+// Base class for Genre demonstrating OCP
 class Genre {
 protected:
     string genre_name;
@@ -11,7 +12,7 @@ public:
     // Constructor for Genre class
     Genre(const string& genre_name) : genre_name(genre_name) {}
 
-    // Pure virtual function to demonstrate runtime polymorphism
+    // Pure virtual function to demonstrate runtime polymorphism (Open for Extension)
     virtual void describe() const = 0;
 
     // Function to display genre
@@ -20,6 +21,7 @@ public:
     }
 };
 
+// Subclass for Fiction extending Genre (Example of extending functionality)
 class Fiction : public Genre {
 public:
     // Calling base class constructor with Fiction genre
@@ -31,6 +33,7 @@ public:
     }
 };
 
+// Subclass for NonFiction extending Genre (Another example of extending functionality)
 class NonFiction : public Genre {
 public:
     // Calling base class constructor with Non-Fiction genre
@@ -42,6 +45,7 @@ public:
     }
 };
 
+// Books class tracks book details and overall quantities
 class Books {
 public:
     // Static members to track total books and quantities
@@ -104,10 +108,11 @@ public:
 int Books::total_books = 0;
 int Books::total_quantity = 0;
 
+// Library class using polymorphism for OCP
 class Library {
 private:
     Books* books;
-    Genre** genres;
+    Genre** genres; // Array of base class pointers for runtime polymorphism
     int num_books;
 
 public:
@@ -118,7 +123,7 @@ public:
     ~Library() {
         delete[] books;
         for (int i = 0; i < num_books; ++i) {
-            delete genres[i];
+            delete genres[i]; // Deleting derived genre objects
         }
         delete[] genres;
         cout << "Library destructor called, memory released." << endl;
@@ -158,11 +163,13 @@ public:
             cin >> genre_choice;
             cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
-            // Runtime Polymorphism: Deciding genre dynamically at runtime
+            // **Open-Closed Principle in action:**
+            // The Library class does not need modification when new genres are added.
+            // New genres can be added by extending the Genre class.
             if (genre_choice == 1) {
-                genres[i] = new Fiction();
+                genres[i] = new Fiction(); // Dynamic polymorphism
             } else {
-                genres[i] = new NonFiction();
+                genres[i] = new NonFiction(); // Dynamic polymorphism
             }
         }
     }
