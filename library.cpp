@@ -6,7 +6,7 @@ using namespace std;
 // Base class for Genre demonstrating OCP
 class Genre {
 protected:
-    string genre_name;
+    string genre_name; // Name of the genre
 
 public:
     // Constructor for Genre class
@@ -15,7 +15,7 @@ public:
     // Pure virtual function to demonstrate runtime polymorphism (Open for Extension)
     virtual void describe() const = 0;
 
-    // Function to display genre
+    // Function to display the genre name
     void displayGenre() const {
         cout << "Genre: " << genre_name << endl;
     }
@@ -53,15 +53,15 @@ public:
     static int total_quantity;
 
 private:
-    int code;
-    string name;
-    string author;
-    int quantity;
+    int code;         // Unique code for the book
+    string name;      // Name of the book
+    string author;    // Author of the book
+    int quantity;     // Number of copies available
 
 public:
     // Default constructor
     Books() {
-        total_books++;
+        total_books++; // Increment total books on object creation
         code = 0;
         name = "Unknown";
         author = "Unknown";
@@ -74,8 +74,8 @@ public:
         this->name = name;
         this->author = author;
         this->quantity = quantity;
-        total_quantity += quantity;
-        total_books++;
+        total_quantity += quantity; // Add to total quantity
+        total_books++;              // Increment total books
     }
 
     // Destructor
@@ -89,7 +89,7 @@ public:
         this->name = name;
         this->author = author;
         this->quantity = quantity;
-        total_quantity += quantity;
+        total_quantity += quantity; // Add to total quantity
     }
 
     // Display function for book information
@@ -111,9 +111,9 @@ int Books::total_quantity = 0;
 // Library class using polymorphism for OCP
 class Library {
 private:
-    Books* books;
-    Genre** genres; // Array of base class pointers for runtime polymorphism
-    int num_books;
+    Books* books;       // Dynamic array of books
+    Genre** genres;     // Array of base class pointers for runtime polymorphism
+    int num_books;      // Total number of books in the library
 
 public:
     // Constructor for Library
@@ -121,11 +121,11 @@ public:
 
     // Destructor to clean up dynamic memory
     ~Library() {
-        delete[] books;
+        delete[] books; // Deleting dynamic books array
         for (int i = 0; i < num_books; ++i) {
             delete genres[i]; // Deleting derived genre objects
         }
-        delete[] genres;
+        delete[] genres; // Deleting dynamic genres array
         cout << "Library destructor called, memory released." << endl;
     }
 
@@ -135,13 +135,14 @@ public:
         cin >> num_books;
         cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
-        books = new Books[num_books];
-        genres = new Genre*[num_books];
+        books = new Books[num_books];    // Allocate dynamic array for books
+        genres = new Genre*[num_books]; // Allocate dynamic array for genres
 
         for (int i = 0; i < num_books; i++) {
             int code, quantity, genre_choice;
             string book_name, author;
 
+            // Input book details
             cout << "Enter Book code: ";
             cin >> code;
             cin.ignore(numeric_limits<streamsize>::max(), '\n');
@@ -158,14 +159,13 @@ public:
 
             books[i].setData(code, book_name, author, quantity);
 
-            // Getting genre choice and dynamically assigning the appropriate class
+            // Input and dynamically assign genre
             cout << "Select genre (1) Fiction (2) Non-Fiction: ";
             cin >> genre_choice;
             cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
-            // **Open-Closed Principle in action:**
-            // The Library class does not need modification when new genres are added.
-            // New genres can be added by extending the Genre class.
+            // Demonstrating OCP:
+            // Library class remains unchanged when new genres are added.
             if (genre_choice == 1) {
                 genres[i] = new Fiction(); // Dynamic polymorphism
             } else {
@@ -181,9 +181,9 @@ public:
         cout << "Book Code \t Book Name\t\t Author \t Quantity\t Genre\n";
         cout << "----------------------------------------------------------\n";
         for (int i = 0; i < num_books; i++) {
-            books[i].display();
-            genres[i]->displayGenre(); // Display genre information
-            genres[i]->describe();     // Dynamic binding with virtual function
+            books[i].display();          // Display book information
+            genres[i]->displayGenre();   // Display genre name
+            genres[i]->describe();       // Dynamic binding with virtual function
         }
         cout << "----------------------------------------------------------\n";
 
